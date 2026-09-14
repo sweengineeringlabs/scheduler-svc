@@ -19,7 +19,7 @@ name = "scheduler_svc_saf"
 path = "src/lib.rs"
 
 [dependencies]
-scheduler-pattern  = "0.1.0"
+scheduler-pattern  = { git = "https://github.com/sweengineeringlabs/scheduler-pattern.git", tag = "v0.1.0" }
 scheduler-svc-core = { path = "../core", version = "0.1.0" }
 
 [dev-dependencies]
