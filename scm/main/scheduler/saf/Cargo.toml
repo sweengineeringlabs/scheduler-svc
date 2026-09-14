@@ -1,0 +1,33 @@
+[package]
+name         = "scheduler-svc-saf"
+version      = "0.1.0"
+edition      = "2021"
+license      = "MIT OR Apache-2.0"
+authors      = ["SWE Engineering Labs"]
+repository   = "https://github.com/sweengineeringlabs/scheduler-svc"
+rust-version = "1.98"
+description  = "scheduler-svc SAF: construction factory for the in-memory Scheduler implementation."
+keywords     = ["scheduler", "saf", "async", "swe"]
+categories   = ["asynchronous"]
+
+[package.metadata.arch]
+application_type = "facade"
+service_type     = "scheduler"
+
+[lib]
+name = "scheduler_svc_saf"
+path = "src/lib.rs"
+
+[dependencies]
+scheduler-pattern  = "0.1.0"
+scheduler-svc-core = { path = "../core", version = "0.1.0" }
+
+[dev-dependencies]
+
+[lints.rust]
+unsafe_code  = "deny"
+missing_docs = "warn"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
