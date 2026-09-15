@@ -5,7 +5,7 @@ use std::sync::mpsc;
 use std::sync::Arc;
 use std::time::Duration;
 
-use scheduler_pattern::{Job, Trigger};
+use scheduler_pattern::{Job, Scheduler, Trigger};
 use scheduler_svc_saf::SchedulerFactory;
 
 /// @covers: SchedulerFactory::in_memory — returns a real, working

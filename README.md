@@ -16,7 +16,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use scheduler_svc_saf::SchedulerFactory;
-use scheduler_pattern::Trigger;
+use scheduler_pattern::{Scheduler, Trigger};
 
 let scheduler = SchedulerFactory::in_memory();
 let job = Arc::new(|| Box::pin(async {
@@ -42,7 +42,7 @@ distributed scheduling backend. See
 | Document | Description |
 |----------|--------------|
 | [Docs index](docs/README.md) | Full documentation index |
-| [Architecture](docs/3-design/architecture.md) | Component diagram, why `Scheduler` (unlike `Executor`) is object-safe |
+| [Architecture](docs/3-design/architecture.md) | Component diagram, why `SchedulerFactory` returns zero-cost `impl Scheduler`, not `Box<dyn Scheduler>` |
 | [ADR-001](docs/3-design/adr/ADR-001-in-memory-reference-implementation.md) | Why `InMemoryScheduler` uses dedicated threads, not a shared timer wheel |
 | [Developer Guide](docs/4-development/developer_guide.md) | Repo layout, working on this crate |
 

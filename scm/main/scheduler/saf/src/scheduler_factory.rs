@@ -11,7 +11,7 @@ impl SchedulerFactory {
     /// Jobs and schedules are lost if the process exits — no persistence,
     /// no distributed coordination. See
     /// [`scheduler_svc_core::InMemoryScheduler`]'s own doc comment.
-    pub fn in_memory() -> Box<dyn Scheduler> {
-        Box::new(scheduler_svc_core::InMemoryScheduler::new())
+    pub fn in_memory() -> impl Scheduler {
+        scheduler_svc_core::InMemoryScheduler::new()
     }
 }

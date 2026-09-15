@@ -16,18 +16,23 @@ Two crates — one `core` reference implementation, one `saf` facade. No
   available — no feature gate, since there's only one backend). A consumer
   depends on `scheduler-pattern` + `scheduler-svc-saf` alone.
 
-## `Scheduler` is object-safe — unlike `executor-pattern`'s `Executor`
+## `Scheduler` is object-safe, but `SchedulerFactory` doesn't use that
 
 `Scheduler::schedule`/`::cancel` have no generic parameters (`Job` is
 already a concrete `Arc<dyn Fn() -> ...>` type alias, not a generic bound),
-so `Scheduler` is fully object-safe: `Box<dyn Scheduler>` exists.
-`SchedulerFactory::in_memory()` returns `Box<dyn Scheduler>` uniformly,
-matching `message-broker-svc-saf`'s `MessageBrokerFactory` shape — unlike
-`executor-svc-saf`'s `ExecutorFactory`, which must return `impl Executor`
-per constructor because `Executor::run<F: Future>` is generic. Worth
-stating explicitly: these are two sibling `-svc` repos in this org with
-genuinely different object-safety constraints, not an inconsistency to
-"fix" toward matching each other.
+so `Scheduler` is fully object-safe: `Box<dyn Scheduler>` would compile.
+`SchedulerFactory::in_memory()` doesn't return it, though — see [scheduler-svc#2](https://github.com/sweengineeringlabs/scheduler-svc/issues/2)
+(a zero-cost abstraction review): with exactly one backend and no caller
+today that needs to pick a `Scheduler` implementation at runtime, boxing
+would only pay a heap allocation and a vtable indirection for the
+scheduler's whole lifetime with nothing to show for it. `in_memory()`
+returns `impl Scheduler` instead — zero-cost, matching
+`executor-svc-saf`'s `ExecutorFactory` shape, even though `Scheduler`
+(unlike `Executor::run<F: Future>`) isn't generic and doesn't strictly
+require it. If a second backend is ever added and a caller genuinely needs
+to select between backends at runtime (not just at compile time via which
+constructor it calls), revisit this with that real caller in view — not
+before.
 
 ## Component Diagram
 
